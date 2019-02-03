@@ -1,0 +1,107 @@
+﻿<!DOCTYPE html>
+<html ng-app="Cosmos">
+<head>
+    <title></title>
+	<meta charset="utf-8" />
+    <link href="Content/bootstrap.min.css" rel="stylesheet" />
+    <style>
+        .login-container{
+    margin-top: 5%;
+    margin-bottom: 5%;
+}
+.login-form-1{
+    padding: 5%;
+    box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 9px 26px 0 rgba(0, 0, 0, 0.19);
+}
+.login-form-1 h3{
+    text-align: center;
+    color: #333;
+}
+.login-form-2{
+    padding: 5%;
+    background: #0062cc;
+    box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 9px 26px 0 rgba(0, 0, 0, 0.19);
+}
+.login-form-2 h3{
+    text-align: center;
+    color: #fff;
+}
+.login-container form{
+    padding: 10%;
+}
+.btnSubmit
+{
+    width: 50%;
+    border-radius: 1rem;
+    padding: 1.5%;
+    border: none;
+    cursor: pointer;
+}
+.login-form-1 .btnSubmit{
+    font-weight: 600;
+    color: #fff;
+    background-color: #0062cc;
+}
+.login-form-2 .btnSubmit{
+    font-weight: 600;
+    color: #0062cc;
+    background-color: #fff;
+}
+.login-form-2 .ForgetPwd{
+    color: #fff;
+    font-weight: 600;
+    text-decoration: none;
+}
+.login-form-1 .ForgetPwd{
+    color: #0062cc;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+    </style>
+</head>
+<body>
+    <div ui-view></div>
+    <script src="scripts/jquery-1.9.1.min.js"></script>
+    <script src="scripts/bootstrap.min.js"></script>
+    <script src="scripts/angular.min.js"></script>
+    <script src="scripts/angular-ui-router.min.js"></script>
+    <script data-require="ui-bootstrap@*" data-semver="1.3.2" src="https://cdn.rawgit.com/angular-ui/bootstrap/gh-pages/ui-bootstrap-tpls-1.3.2.js"></script>
+    <script src="app.js"></script>
+    <script src="config.js"></script>
+    <script src="commonServices.js"></script>
+    <script src="admin/adminController.js"></script>
+
+    <script type="text/javascript">
+        angular.module('Cosmos')
+        .controller('loginController',loginController)
+        loginController.$inject = ['$scope', '$state'];
+        function loginController($scope, $state) {
+            $scope.loginObj = { Email: null, Password: null, IsAdmin: false, IsEmployee: false };
+            $scope.emailRegex=/^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+            $scope.login = function () {
+                $scope.isError = false; $scope.errorMessage = null;
+                if ($scope.emailRegex.test($scope.loginObj.Email) === false) {
+                    $scope.isError = true;
+                    $scope.errorMessage = "Invalid Email";
+                    return;
+                }
+                if (!$scope.loginObj.Password) {
+                    $scope.isError = true;
+                    $scope.errorMessage = "Please Enter Password";
+                    return;
+                }
+                if (!$scope.loginObj.IsAdmin && !$scope.loginObj.IsEmployee) {
+                    $scope.isError = true;
+                    $scope.errorMessage = "Please check whether yor are Admin Or Employee";
+                    return;
+                }
+                window.localStorage.setItem('Admin', $scope.loginObj.IsAdmin);
+                window.localStorage.setItem('Employee', $scope.loginObj.IsEmployee);
+                $state.go("home.admin");
+            }
+        }
+    </script>
+    
+</body>
+</html>

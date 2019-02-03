@@ -1,0 +1,88 @@
+﻿<div ng-controller="adminController as vm">
+    <div class="container" ng-if="!vm.isForm">
+        <button class="btn btn-primary" type="submit" ng-click="vm.addEditUser('Add')">Add User</button>
+        <button class="btn btn-primary" type="submit" ng-click="vm.addEditUser('Edit')">Edit User</button>
+        <button class="btn btn-primary" type="submit" ng-click="vm.logOut()">Logout</button>
+        <div style="margin-top:10px">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th></th>                        
+                        <th>Name</th>
+                        <th>Role</th>
+                        <th>DOB</th>
+                        <th>Address</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="adminData in vm.adminData track by $index">
+                        <td><div class="custom-control custom-checkbox">
+    <input type="checkbox" class="custom-control-input" id="chkadmin" ng-checked="vm.selection.indexOf(adminData)>-1" 
+           ng-click="vm.toggleSelection(adminData)">
+    <label class="custom-control-label" for="admin"></label>
+</div></td>
+                        <td>{{adminData.Name}}</td>
+                        <td>{{adminData.Role}}</td>
+                        <td>{{adminData.Dob}}</td>
+                        <td>{{adminData.Address}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <form class="needs-validation" ng-if="vm.isForm" id="adminEmployee">
+        <div class="form-row">
+            <div class="alert alert-danger" ng-if="vm.isError" style="margin:10px 22px 10px 463px">
+                <p><i class="alert-icon"></i>{{vm.errorMessage}}</p>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="cimg" id="img">
+                </div>
+                <input name="files" type="file" id="upload" class="mui-btn mui-btn-primary mui-btn-raised" />
+            </div>
+            <div class="col-md-4 mb-3">
+                <label for="name">Name</label>
+                <input type="text" class="form-control" id="txtName" placeholder="Name" ng-model="vm.createObj.Name" title="Name">
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="col-md-4 mb-3">
+                    <label for="role">Role</label>
+                    <select class="form-control" ng-model="vm.createObj.Role" ng-options="role.RoleName as role.RoleName for role in vm.Roles" ng-disabled="true" title="Role">
+                        <option value="">Select Option</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col-md-3 mb-3">
+                <label for="dOb">DOB</label>
+                <div class="input-group date-validation date maxwid-inrespnce" id="datetimepicker3" style="position: static!important;">
+                    <input type="text" class="form-control mand wid-respnce" uib-datepicker-popup="{{format}}" placeholder="{{format}}" data-format="{{format}}" title="DOB"
+                           ng-model="vm.createObj.Dob" is-open="datePicker.adminDate" datepicker-options="dateOptions"
+                           show-button-bar="false" close-text="Close" data-validationtype="required,date" />
+                    <span class="input-group-btn">
+                        <button class="btn btn-default height-34" ng-click="open($event,'adminDate')">
+                            <i class="glyphicon glyphicon-calendar"></i>
+                        </button>
+                    </span>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <label for="address">Address</label>
+                <textarea class="form-control mand" rows="1" maxlength="256" ng-model="vm.createObj.Address" title="Address"></textarea>
+            </div>
+            <div class="col-md-3 mb-3">
+                <label for="password">Password</label>
+                <input type="text" class="form-control" id="txtpassword" placeholder="Password" ng-model="vm.createObj.Password" title="Password">
+            </div>
+        </div>
+        <div class="pull-right" style="margin:10px 10px 0px 10px">
+            <button class="btn btn-primary" type="submit" ng-click="vm.submit()">Submit form</button>
+            <button class="btn btn-primary" type="submit" ng-click="vm.cancel()">Cancel</button>
+        </div>
+            
+    </form>
+    
+
+</div>
